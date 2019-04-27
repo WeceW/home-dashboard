@@ -31,3 +31,33 @@
     transform: rotate(360deg);
   }
 }
+
+.widget {
+  background: rgba(0,0,0,0.8);
+  border-radius: 16px;
+  color: white;
+  padding: 0px;
+  margin: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #282c34; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #222; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #111; 
+}
