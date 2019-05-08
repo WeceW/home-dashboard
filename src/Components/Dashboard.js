@@ -1,9 +1,14 @@
-import React, {Component} from 'react';
-import styled from 'styled-components';
-import DateTimeWidget from './Widgets/DateTimeWidget';
-import WeatherWidget from './Widgets/WeatherWidget';
-import TransportWidget from './Widgets/TransportWidget';
-import QuoteWidget from './Widgets/QuoteWidget';
+import React, {Component} from 'react'
+import styled from 'styled-components'
+import DateTimeWidget from './Widgets/DateTimeWidget'
+import WeatherWidget from './Widgets/WeatherWidget'
+import TransportWidget from './Widgets/TransportWidget'
+import QuoteWidget from './Widgets/QuoteWidget'
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faClock, faCloudSun, faQuoteRight, faBusAlt, faToggleOn, faToggleOff} from '@fortawesome/free-solid-svg-icons'
+library.add(faClock, faCloudSun, faQuoteRight, faBusAlt, faToggleOn, faToggleOff)
 
 const DashboardContainer = styled.div`
   color: white;
@@ -29,7 +34,8 @@ const Menu = styled.ul`
 `
 
 const MenuSuperItems = styled.div`
-  background: rgba(255,0,0,0.1);
+  background: rgba(255,0,0,0.3);
+  color: black;
 `
 
 const MenuItem = styled.div`
@@ -38,11 +44,12 @@ const MenuItem = styled.div`
   width: 80px;
   height: 80px;
   line-height: 80px;
+  font-size: 40px;
   text-align: center;
 
   &:hover {
     cursor: pointer;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.3);
   }
 `
 
@@ -67,7 +74,7 @@ export default class Dashboard extends Component {
     super(props);
 
     this.state = {
-      itemsName: ['KLO', 'SÄÄ', 'Q1', 'Q2'],
+      widgetIcons: ['clock', 'cloud-sun', 'bus-alt', 'quote-right'],
       itemsOrder: [0,0,0,0],
       visibleItems: 0,
     }
@@ -130,11 +137,14 @@ export default class Dashboard extends Component {
 
         <Menu>
           <MenuSuperItems>
-            <MenuItem id='toggleWidgets' onClick={() => this.toggleWidgets()}>Toggle</MenuItem>
+            <MenuItem id='toggleWidgets' onClick={() => this.toggleWidgets()}>
+              <FontAwesomeIcon icon={this.state.itemsOrder.includes(0) ? 'toggle-off' : 'toggle-on' } />
+            </MenuItem>
           </MenuSuperItems>
           {this.state.itemsOrder.map((item, index) => (
             <MenuItem id={index} onClick={() => this.openWidget(index)} active={item}>
-              <div>{this.state.itemsName[index]}</div>
+              {/* <div>{this.state.itemsName[index]}</div> */}
+              <FontAwesomeIcon icon={this.state.widgetIcons[index]} />
               <MenuItemOrderNo disp={item}>{item}</MenuItemOrderNo>
             </MenuItem>
           ))}
