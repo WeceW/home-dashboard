@@ -4,10 +4,16 @@ import styled from 'styled-components';
 const WidgetContainer = styled.div`
   display: ${props => props.flexOrd ? 'flex' : 'none'};
   order:   ${props => props.flexOrd};
-  width:   ${props => props.width*28}vw;
+  width:   ${props => props.height*22}vh;
   height:  ${props => props.height*22}vh;
   flex-flow: column nowrap;
   justify-content: space-around;
+  
+  border-radius: 100%;
+  background: rgba(255,255,255,0.6);
+  color: black;
+  border: 10px solid rgba(0,0,0,1);
+  box-sizing: border-box;
 `
 
 const Clock = styled.div`
