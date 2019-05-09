@@ -40,7 +40,7 @@ const Forecast = styled.table`
   float: right;
   height: 100%;
   overflow: auto;
-  margin: auto 20px;
+  ${'' /* margin: auto 20px; */}
   padding: 0px;
   font-size: 1.5em;
   line-height: normal;

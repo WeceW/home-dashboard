@@ -103,7 +103,7 @@ export default class NewsWidget extends Component {
           mainNews: news,
           // Set initial "tab" values
           currentType: 'main',
-          currentTitle: result['rss']['channel'][0]['category'] + ' (1/3)', 
+          currentTitle: result['rss']['channel'][0]['category'] + ' (1/4)', 
           currentNews: news,
         });
       }));
@@ -134,6 +134,14 @@ export default class NewsWidget extends Component {
           mostReadNews: news,
         });
       }));
+    axios.get('https://cors-anywhere.herokuapp.com/https://feeds.yle.fi/uutiset/v1/majorHeadlines/YLE_URHEILU.rss')
+      .then(response => parseString(response.data, (err, result) => {
+        let news = result['rss']['channel'][0]['item'];
+        this.setState({
+          sportsTitle: 'Sport: ' + result['rss']['channel'][0]['category'], 
+          sportsNews: news,
+        });
+      }));
   }
 
   changeNewsType() {
@@ -153,14 +161,14 @@ export default class NewsWidget extends Component {
         news = this.state.mostReadNews;
         break;
       case 'mostRead':
-        type = 'main';
-        title = this.state.mainTitle + ' (1/';
-        news = this.state.mainNews;
+        type = 'sports';
+        title = this.state.sportsTitle + ' (4/';
+        news = this.state.sportsNews;
         break;
       default:
         break;
     }
-    title = title + '3)';
+    title = title + '4)';
 
     this.setState({
       currentType: type,

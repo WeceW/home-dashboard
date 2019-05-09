@@ -48,7 +48,7 @@ const MenuSuperItems = styled.div`
 
 const MenuItem = styled.div`
   position: relative;
-  background: ${props => props.active ? 'rgba(0,0,0,0.5)' : ''};
+  ${'' /* background: ${props => props.active ? 'rgba(0,0,0,0.5)' : ''}; */}
   width: 80px;
   height: 80px;
   line-height: 80px;

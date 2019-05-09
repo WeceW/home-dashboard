@@ -50,13 +50,14 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: rgba(0,0,0,0.25); 
+  background: rgba(0,0,0,0.3); 
   border-radius: 0 16px 16px 0;
 }
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.25); 
+  background: rgba(0,0,0,0.9); 
+  border-radius: 16px;
 }
 
 /* Handle on hover */
