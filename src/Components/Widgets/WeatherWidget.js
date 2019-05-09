@@ -10,7 +10,7 @@ const WidgetContainer = styled.div`
   height:  ${props => props.height*22}vh;
   line-height: ${props => props.height*22}vh;
   background-image: url(${props => props.bgimage});
-  background-size: ${props => props.height*2*22}vh;
+  background-size: ${props => props.height*1.5*22}vh;
   background-repeat: no-repeat;
   background-position: center center;
   justify-content: space-between;
@@ -32,6 +32,7 @@ const CurrentState = styled.span`
   vertical-align: middle;
   width: 30%;
   line-height: normal;
+  text-shadow: 1px 1px 10px #000;
 `
 
 const Forecast = styled.table`
@@ -43,6 +44,7 @@ const Forecast = styled.table`
   padding: 0px;
   font-size: 1.5em;
   line-height: normal;
+  text-shadow: 1px 1px 10px #000;
 
   tr {
     td {

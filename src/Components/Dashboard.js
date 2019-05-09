@@ -4,11 +4,18 @@ import DateTimeWidget from './Widgets/DateTimeWidget'
 import WeatherWidget from './Widgets/WeatherWidget'
 import TransportWidget from './Widgets/TransportWidget'
 import QuoteWidget from './Widgets/QuoteWidget'
+import NewsWidget from './Widgets/NewsWidget'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClock, faCloudSun, faQuoteRight, faBusAlt, faToggleOn, faToggleOff} from '@fortawesome/free-solid-svg-icons'
-library.add(faClock, faCloudSun, faQuoteRight, faBusAlt, faToggleOn, faToggleOff)
+import { faClock, 
+         faCloudSun, 
+         faQuoteRight, 
+         faBusAlt,
+         faNewspaper, 
+         faToggleOn, 
+         faToggleOff} from '@fortawesome/free-solid-svg-icons'
+library.add(faClock, faCloudSun, faQuoteRight, faBusAlt, faNewspaper, faToggleOn, faToggleOff)
 
 const DashboardContainer = styled.div`
   color: white;
@@ -20,6 +27,7 @@ const WidgetArea = styled.div`
   flex-flow: row wrap;
   justify-content: center;
   height: 100%;
+  padding: 10px 0;
 `
 
 const Menu = styled.ul`
@@ -74,8 +82,8 @@ export default class Dashboard extends Component {
     super(props);
 
     this.state = {
-      widgetIcons: ['clock', 'cloud-sun', 'bus-alt', 'quote-right'],
-      itemsOrder: [0,0,0,0],
+      widgetIcons: ['clock', 'cloud-sun', 'newspaper', 'bus-alt', 'quote-right'],
+      itemsOrder: [0,0,0,0,0],
       visibleItems: 0,
     }
   }
@@ -142,7 +150,7 @@ export default class Dashboard extends Component {
             </MenuItem>
           </MenuSuperItems>
           {this.state.itemsOrder.map((item, index) => (
-            <MenuItem id={index} onClick={() => this.openWidget(index)} active={item}>
+            <MenuItem key={index} onClick={() => this.openWidget(index)} active={item}>
               {/* <div>{this.state.itemsName[index]}</div> */}
               <FontAwesomeIcon icon={this.state.widgetIcons[index]} />
               <MenuItemOrderNo disp={item}>{item}</MenuItemOrderNo>
@@ -153,8 +161,9 @@ export default class Dashboard extends Component {
         <WidgetArea>
           <DateTimeWidget  id={0} flexOrd={this.state.itemsOrder[0]} width={1} height={2} />
           <WeatherWidget   id={1} flexOrd={this.state.itemsOrder[1]} width={2} height={2} city="Tampere" />
-          <TransportWidget id={2} flexOrd={this.state.itemsOrder[2]} width={2} height={2} />
-          <QuoteWidget     id={3} flexOrd={this.state.itemsOrder[3]} width={1} height={2} />
+          <NewsWidget      id={2} flexOrd={this.state.itemsOrder[2]} width={1} height={2} />
+          <TransportWidget id={3} flexOrd={this.state.itemsOrder[3]} width={1} height={2} />
+          <QuoteWidget     id={4} flexOrd={this.state.itemsOrder[4]} width={1} height={2} />
         </WidgetArea>
 
       </DashboardContainer>
