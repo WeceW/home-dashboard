@@ -3,6 +3,22 @@ import styled from 'styled-components';
 import axios from 'axios';
 import {parseString} from 'xml2js';
 
+const intervalDelay = 1000*60*5; // Refresh every 5min
+
+// Url to enable CORS header for each request:
+const corsUrl         = 'https://cors-anywhere.herokuapp.com/';
+
+const noOfCategories  = 4;
+const mainNewsUrl     = corsUrl + 
+     'https://feeds.yle.fi/uutiset/v1/majorHeadlines/YLE_UUTISET.rss';
+const recentNewsUrl   = corsUrl + 
+     'https://feeds.yle.fi/uutiset/v1/recent.rss?publisherIds=YLE_UUTISET';
+const mostReadNewsUrl = corsUrl + 
+     'https://feeds.yle.fi/uutiset/v1/mostRead/YLE_UUTISET.rss';
+const sportsNewsUrl   = corsUrl + 
+     'https://feeds.yle.fi/uutiset/v1/majorHeadlines/YLE_URHEILU.rss';
+
+
 const WidgetContainer = styled.div`
   display:     ${props => props.flexOrd ? 'block' : 'none'};
   order:       ${props => props.flexOrd};
@@ -60,33 +76,30 @@ const Headline = styled.div`
 `
 
 export default class NewsWidget extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      currentType: 'recent',
+      currentType: '',
       currentTitle: 'Ladataan...',
       currentNews: '',
-
       mainTitle: '',
       mainNews: {},
-
       recentTitle: '',
       recentNews: {},
-
       mostReadTitle: '',
       mostReadNews: {},
-
       sportsTitle: '',
       sportsNews: {},
       
     }
-    this.getQuote();
+    this.getNews();
   }
 
   componentDidMount() {
     this.intervalID = setInterval(
-      () => this.getQuote(),
-      1000*60*5 // 5min
+      () => this.getNews(),
+      intervalDelay
     );
   }
       
@@ -94,21 +107,35 @@ export default class NewsWidget extends Component {
     clearInterval(this.intervallID);
   }
   
-  getQuote() {
-    axios.get('https://cors-anywhere.herokuapp.com/https://feeds.yle.fi/uutiset/v1/majorHeadlines/YLE_UUTISET.rss')
-      .then(response => parseString(response.data, (err, result) => {
-        let news = result['rss']['channel'][0]['item'];
-        this.setState({
-          mainTitle: result['rss']['channel'][0]['category'], 
-          mainNews: news,
-          // Set initial "tab" values
-          currentType: 'main',
-          currentTitle: result['rss']['channel'][0]['category'] + ' (1/4)', 
-          currentNews: news,
-        });
-      }));
+  getNews = () => {
+    this.getMainNews();
+    this.getRecentNews();
+    this.getMostReadNews();
+    this.getSportsNews();
+  }
 
-    axios.get('https://cors-anywhere.herokuapp.com/https://feeds.yle.fi/uutiset/v1/recent.rss?publisherIds=YLE_UUTISET')
+  getMainNews = () => {
+    axios.get(mainNewsUrl)
+      .then(response => parseString(response.data, (err, result) => {
+        const news = result['rss']['channel'][0]['item'];
+        const title = result['rss']['channel'][0]['category'];
+        this.setState({
+          mainTitle: title, 
+          mainNews: news,
+        });
+        // Set initial tab (if not set yet)
+        if (this.state.currentType === '') {
+          this.setState({
+            currentType: 'main',
+            currentTitle: title + ' (1/'+noOfCategories+')',
+            currentNews: news,
+          });
+        }
+      }));
+  }
+
+  getRecentNews = () => {
+    axios.get(recentNewsUrl)
       .then(response => parseString(response.data, (err, result) => {
         let news = result['rss']['channel'][0]['item'];
         this.setState({
@@ -116,8 +143,10 @@ export default class NewsWidget extends Component {
           recentNews: news,
         });
       }));
+  }
 
-    axios.get('https://cors-anywhere.herokuapp.com/https://feeds.yle.fi/uutiset/v1/mostRead/YLE_UUTISET.rss')
+  getMostReadNews = () => {
+    axios.get(mostReadNewsUrl)
       .then(response => parseString(response.data, (err, result) => {
         let news = result['rss']['channel'][0]['item'];
         this.setState({
@@ -125,16 +154,10 @@ export default class NewsWidget extends Component {
           mostReadNews: news,
         });
       }));
+  }
 
-    axios.get('https://cors-anywhere.herokuapp.com/https://feeds.yle.fi/uutiset/v1/mostRead/YLE_UUTISET.rss')
-      .then(response => parseString(response.data, (err, result) => {
-        let news = result['rss']['channel'][0]['item'];
-        this.setState({
-          mostReadTitle: result['rss']['channel'][0]['category'], 
-          mostReadNews: news,
-        });
-      }));
-    axios.get('https://cors-anywhere.herokuapp.com/https://feeds.yle.fi/uutiset/v1/majorHeadlines/YLE_URHEILU.rss')
+  getSportsNews = () => {
+    axios.get(sportsNewsUrl)
       .then(response => parseString(response.data, (err, result) => {
         let news = result['rss']['channel'][0]['item'];
         this.setState({
@@ -144,7 +167,7 @@ export default class NewsWidget extends Component {
       }));
   }
 
-  changeNewsType() {
+  changeNewsType = () => {
     let type = 'main';
     let title = this.state.mainTitle + ' (1/';
     let news = this.state.mainNews;
@@ -168,7 +191,7 @@ export default class NewsWidget extends Component {
       default:
         break;
     }
-    title = title + '4)';
+    title += noOfCategories + ')';
 
     this.setState({
       currentType: type,

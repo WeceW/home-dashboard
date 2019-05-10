@@ -48,7 +48,7 @@ export default class QuoteWidget extends Component {
     clearInterval(this.intervallID);
   }
   
-  getQuote() {
+  getQuote = () => {
     axios.get('https://thesimpsonsquoteapi.glitch.me/quotes?count=1&timestamp=' + new Date().getTime() + '&')
       .then(response => this.setState({
         quote: response['data'][0]['quote'],

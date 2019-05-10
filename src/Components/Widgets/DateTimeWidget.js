@@ -1,6 +1,14 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 
+const weekdays = ['Sunnuntai',
+                  'Maanantai', 
+                  'Tiistai', 
+                  'Keskiviikko', 
+                  'Torstai', 
+                  'Perjantai', 
+                  'Lauantai'];
+
 const WidgetContainer = styled.div`
   display: ${props => props.flexOrd ? 'flex' : 'none'};
   order:   ${props => props.flexOrd};
@@ -55,23 +63,6 @@ export default class DateTimeWidget extends Component {
 
   render() {
     const {date, time, day} = this.state;
-
-    let weekday = "";
-    if (day === 0)
-      weekday = "Sunnuntai";
-    else if (day === 1)
-      weekday = "Maanantai";
-    else if (day === 2)
-      weekday = "Tiistai";
-    else if (day === 3)
-      weekday = "Keskiviikko";
-    else if (day === 4)
-      weekday = "Torstai";
-    else if (day === 5)
-      weekday = "Perjantai";
-    else if (day === 6)
-      weekday = "Lauantai";
-
     return(
       <WidgetContainer 
         className="widget" 
@@ -79,7 +70,7 @@ export default class DateTimeWidget extends Component {
         height={this.props.height}
         flexOrd={this.props.flexOrd}
       >
-        <Day>{weekday} {date.split('.')[0]}.{date.split('.')[1]}.</Day>
+        <Day>{weekdays[day]} {date.split('.')[0]}.{date.split('.')[1]}.</Day>
         <Clock>{time}</Clock>
         <Day>&nbsp;</Day>
       </WidgetContainer>

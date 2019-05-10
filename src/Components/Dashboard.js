@@ -2,20 +2,17 @@ import React, {Component} from 'react'
 import styled from 'styled-components'
 import DateTimeWidget from './Widgets/DateTimeWidget'
 import WeatherWidget from './Widgets/WeatherWidget'
+import NewsWidget from './Widgets/NewsWidget'
 import TransportWidget from './Widgets/TransportWidget'
 import QuoteWidget from './Widgets/QuoteWidget'
-import NewsWidget from './Widgets/NewsWidget'
-
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClock, 
-         faCloudSun, 
-         faQuoteRight, 
-         faBusAlt,
-         faNewspaper, 
-         faToggleOn, 
-         faToggleOff} from '@fortawesome/free-solid-svg-icons'
+import { faClock, faCloudSun, faQuoteRight, faBusAlt, faNewspaper, 
+         faToggleOn, faToggleOff
+       } from '@fortawesome/free-solid-svg-icons'
 library.add(faClock, faCloudSun, faQuoteRight, faBusAlt, faNewspaper, faToggleOn, faToggleOff)
+
+const initialOrder = [1,2,3,0,4];
 
 const DashboardContainer = styled.div`
   color: white;
@@ -48,7 +45,6 @@ const MenuSuperItems = styled.div`
 
 const MenuItem = styled.div`
   position: relative;
-  ${'' /* background: ${props => props.active ? 'rgba(0,0,0,0.5)' : ''}; */}
   width: 80px;
   height: 80px;
   line-height: 80px;
@@ -83,12 +79,12 @@ export default class Dashboard extends Component {
 
     this.state = {
       widgetIcons: ['clock', 'cloud-sun', 'newspaper', 'bus-alt', 'quote-right'],
-      itemsOrder: [0,0,0,0,0],
-      visibleItems: 0,
+      itemsOrder: initialOrder,
+      visibleItems: initialOrder.filter(item => item !== 0).length,
     }
   }
 
-  openWidget = (i) => {
+  toggleWidget = (i) => {
     this.setState(state => {
       let itemsOrder = state.itemsOrder;
       const itemIsRemoved = itemsOrder[i];
@@ -104,8 +100,6 @@ export default class Dashboard extends Component {
       }
 
       const visibleItems = state.visibleItems + (itemIsRemoved ? -1 : 1);
-
-
 
       return {
         itemsOrder,
@@ -140,30 +134,31 @@ export default class Dashboard extends Component {
   }
 
   render () {
+    const {itemsOrder, widgetIcons} = this.state;
+    let itemIndex = 0;
     return (
       <DashboardContainer>
 
         <Menu>
           <MenuSuperItems>
             <MenuItem id='toggleWidgets' onClick={() => this.toggleWidgets()}>
-              <FontAwesomeIcon icon={this.state.itemsOrder.includes(0) ? 'toggle-off' : 'toggle-on' } />
+              <FontAwesomeIcon icon={itemsOrder.includes(0) ? 'toggle-off' : 'toggle-on' } />
             </MenuItem>
           </MenuSuperItems>
-          {this.state.itemsOrder.map((item, index) => (
-            <MenuItem key={index} onClick={() => this.openWidget(index)} active={item}>
-              {/* <div>{this.state.itemsName[index]}</div> */}
-              <FontAwesomeIcon icon={this.state.widgetIcons[index]} />
+          {itemsOrder.map((item, index) => (
+            <MenuItem key={index} onClick={() => this.toggleWidget(index)} active={item}>
+              <FontAwesomeIcon icon={widgetIcons[index]} />
               <MenuItemOrderNo disp={item}>{item}</MenuItemOrderNo>
             </MenuItem>
           ))}
         </Menu>
 
         <WidgetArea>
-          <DateTimeWidget  id={0} flexOrd={this.state.itemsOrder[0]} width={1} height={2} />
-          <WeatherWidget   id={1} flexOrd={this.state.itemsOrder[1]} width={2} height={2} city="Tampere" />
-          <NewsWidget      id={2} flexOrd={this.state.itemsOrder[2]} width={1} height={2} />
-          <TransportWidget id={3} flexOrd={this.state.itemsOrder[3]} width={1} height={2} />
-          <QuoteWidget     id={4} flexOrd={this.state.itemsOrder[4]} width={1} height={2} />
+          <DateTimeWidget  id={itemIndex} flexOrd={itemsOrder[itemIndex++]} width={1} height={2} />
+          <WeatherWidget   id={itemIndex} flexOrd={itemsOrder[itemIndex++]} width={2} height={2} city="Tampere" />
+          <NewsWidget      id={itemIndex} flexOrd={itemsOrder[itemIndex++]} width={1} height={2} />
+          <TransportWidget id={itemIndex} flexOrd={itemsOrder[itemIndex++]} width={1} height={2} />
+          <QuoteWidget     id={itemIndex} flexOrd={itemsOrder[itemIndex++]} width={1} height={2} />
         </WidgetArea>
 
       </DashboardContainer>
