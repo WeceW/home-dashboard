@@ -12,7 +12,7 @@ import { faClock, faCloudSun, faQuoteRight, faBusAlt, faNewspaper,
        } from '@fortawesome/free-solid-svg-icons'
 library.add(faClock, faCloudSun, faQuoteRight, faBusAlt, faNewspaper, faToggleOn, faToggleOff)
 
-const initialOrder = [1,2,3,0,4];
+const initialOrder = [4,2,3,1,5];
 
 const DashboardContainer = styled.div`
   color: white;

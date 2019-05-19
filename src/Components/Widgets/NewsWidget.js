@@ -212,7 +212,7 @@ export default class NewsWidget extends Component {
     return headlines.map((headline, i) => {
       return (
         <Headline key={i}>
-          <span class='timestamp'>{timestamps[i] + ' '}</span>
+          <span className='timestamp'>{timestamps[i] + ' '}</span>
           {headline}
         </Headline>
       );
