@@ -82,7 +82,7 @@ export default class DateTimeWidget extends Component {
   }
   
   getWeatherInfo() {
-    axios.get('http://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&' + 
+    axios.get('https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&' + 
               'request=getFeature' +
               '&storedquery_id=fmi::forecast::hirlam::surface::point::timevaluepair' +
               '&place=' + this.props.city +

@@ -92,7 +92,7 @@ export default class TransportWidget extends Component {
   }
   
   getSchedule() {
-    axios.get('http://data.itsfactory.fi/journeys/api/1/stop-monitoring?stops='+stopNos.join(',')+'&timestamp=' + new Date().getTime() + '&')
+    axios.get('https://cors-anywhere.herokuapp.com/'+'http://data.itsfactory.fi/journeys/api/1/stop-monitoring?stops='+stopNos.join(',')+'&timestamp=' + new Date().getTime() + '&')
       .then(response => this.setState({
         stops: response.data.body,
       }))
